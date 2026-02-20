@@ -51,6 +51,18 @@ class StorageManager {
         address: '789 Pine Rd',
         city: 'Chicago',
         postalCode: '60601'
+      },
+      {
+        id: 'user4',
+        name: 'Raj Gupta',
+        email: 'Rajgupta@gamil.com',
+        password: 'Rajlpu@123',
+        phone: '(555) 456-7890',
+        avatar: '👨',
+        joinDate: new Date().toISOString(),
+        address: '321 Elm St',
+        city: 'Mumbai',
+        postalCode: '400001'
       }
     ];
     
