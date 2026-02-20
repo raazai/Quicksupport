@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickHelp Pro - Premium Service Platform</title>
+  <link rel="stylesheet" href="premium.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#bookings" class="nav-link">Bookings</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li class="logout-btn" onclick="logout()">Logout</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Parallax -->
+  <section class="hero">
+    <div class="hero-content" data-parallax="0.5">
+      <div class="hero-text">
+        <h2 class="hero-title">Premium Service, Delivered Perfectly</h2>
+        <p class="hero-subtitle">Experience the future of home services with AI-powered matching and guaranteed quality</p>
+        <button class="cta-button" onclick="scrollToServices()">Explore Services</button>
+      </div>
+    </div>
+    <div class="hero-background" data-parallax="0.3"></div>
+  </section>
+
+  <!-- User Welcome Section -->
+  <section class="welcome-section">
+    <div class="glassmorphism-card welcome-card" data-parallax="0.4">
+      <div class="card-inner">
+        <h3 id="welcomeText">Welcome to QuickHelp Pro</h3>
+        <p id="userGreeting">Premium service solutions at your fingertips</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services-section">
+    <div class="section-header" data-parallax="0.3">
+      <h2>Premium Services</h2>
+      <p>Handpicked professionals for your needs</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card" onclick="bookService('Cleaning')" data-parallax="0.2">
+        <div class="card-content">
+          <div class="service-icon">🧹</div>
+          <h3>Professional Cleaning</h3>
+          <p>Expert cleaners ensuring spotless results</p>
+          <div class="price-tag">Starting at $40</div>
+        </div>
+        <div class="card-shine"></div>
+      </div>
+
+      <div class="service-card" onclick="bookService('Plumbing')" data-parallax="0.2">
+        <div class="card-content">
+          <div class="service-icon">🔧</div>
+          <h3>Plumbing Experts</h3>
+          <p>24/7 emergency plumbing services</p>
+          <div class="price-tag">Starting at $60</div>
+        </div>
+        <div class="card-shine"></div>
+      </div>
+
+      <div class="service-card" onclick="bookService('Electrician')" data-parallax="0.2">
+        <div class="card-content">
+          <div class="service-icon">⚡</div>
+          <h3>Electrical Services</h3>
+          <p>Safe and certified electrical solutions</p>
+          <div class="price-tag">Starting at $75</div>
+        </div>
+        <div class="card-shine"></div>
+      </div>
+
+      <div class="service-card" onclick="bookService('Cooking')" data-parallax="0.2">
+        <div class="card-content">
+          <div class="service-icon">👨‍🍳</div>
+          <h3>Personal Chef</h3>
+          <p>Gourmet meals prepared in your home</p>
+          <div class="price-tag">Starting at $120</div>
+        </div>
+        <div class="card-shine"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Section -->
+  <section id="bookings" class="bookings-section">
+    <div class="section-header">
+      <h2>Active Bookings</h2>
+      <p>Track your service requests in real-time</p>
+    </div>
+
+    <div class="bookings-container">
+      <div id="bookingList" class="booking-list"></div>
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">📦</div>
+        <p>No active bookings yet</p>
+        <button class="secondary-button" onclick="scrollToServices()">Book a Service</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="about" class="features-section">
+    <div class="section-header">
+      <h2>Why Choose QuickHelp Pro?</h2>
+      <p>Industry-leading features and benefits</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-number">01</div>
+        <h3>Verified Professionals</h3>
+        <p>All service providers are thoroughly vetted and certified</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">02</div>
+        <h3>Real-time Tracking</h3>
+        <p>Live GPS tracking of your service professional</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">03</div>
+        <h3>Quality Guarantee</h3>
+        <p>100% satisfaction guarantee or your money back</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">04</div>
+        <h3>Instant Support</h3>
+        <p>24/7 customer support via chat, call, or email</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">05</div>
+        <h3>Competitive Pricing</h3>
+        <p>Best prices in the market with transparent billing</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">06</div>
+        <h3>Flexible Scheduling</h3>
+        <p>Book services at your convenience, anytime</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="scrollToServices()">📞</button>
+
+  <script src="premium.js"></script>
+</body>
+</html>

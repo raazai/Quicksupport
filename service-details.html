@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Details - QuickHelp Pro</title>
+  <link rel="stylesheet" href="premium.css">
+  <style>
+    .service-details-hero {
+      position: relative;
+      z-index: 10;
+      margin-top: 80px;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(236, 72, 153, 0.1));
+      border-radius: 24px;
+      margin: 80px 20px 0;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-icon {
+      font-size: 120px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .rating-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .price-tag-large {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .price-period {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .booking-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .option-btn {
+      padding: 16px 24px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      text-align: left;
+    }
+
+    .option-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+
+    .details-section {
+      max-width: 1400px;
+      margin: 80px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 40px;
+      color: var(--text-primary);
+    }
+
+    .features-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      animation: slideUp 0.6s ease-out forwards;
+      transition: all var(--transition-normal);
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-8px);
+    }
+
+    .feature-item:nth-child(1) { animation-delay: 0s; }
+    .feature-item:nth-child(2) { animation-delay: 0.1s; }
+    .feature-item:nth-child(3) { animation-delay: 0.2s; }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .feature-item h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .feature-item p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .reviews-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .review-stats {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+    }
+
+    .overall-rating {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .overall-rating-number {
+      font-size: 4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .overall-rating-stars {
+      font-size: 24px;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+
+    .overall-rating-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .rating-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rating-bar-label {
+      width: 80px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .rating-bar-fill {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .rating-bar-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 4px;
+      transition: width 1s ease-out;
+    }
+
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .review-card:nth-child(1) { animation-delay: 0s; }
+    .review-card:nth-child(2) { animation-delay: 0.1s; }
+    .review-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .reviewer-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reviewer-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .reviewer-details h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .reviewer-details p {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .review-stars {
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: #fbbf24;
+    }
+
+    .review-text {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .faq-section {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .faq-item:nth-child(1) { animation-delay: 0s; }
+    .faq-item:nth-child(2) { animation-delay: 0.1s; }
+    .faq-item:nth-child(3) { animation-delay: 0.2s; }
+    .faq-item:nth-child(4) { animation-delay: 0.3s; }
+
+    .faq-question {
+      padding: 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background var(--transition-normal);
+      font-weight: 700;
+    }
+
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-toggle {
+      font-size: 20px;
+      transition: transform var(--transition-normal);
+    }
+
+    .faq-item.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-normal);
+      padding: 0 24px 0 24px;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 24px 24px 24px;
+    }
+
+    .faq-answer p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+
+      .booking-options {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link">← Back</a></li>
+        <li class="logout-btn" onclick="logout()">Logout</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Service Details Hero -->
+  <section class="service-details-hero" id="serviceHero">
+    <div class="hero-content">
+      <div>
+        <div class="hero-icon" id="serviceIcon">🧹</div>
+      </div>
+      <div class="hero-text">
+        <h1 id="serviceName">Professional Cleaning</h1>
+        <div class="rating-display">
+          <span id="serviceRating">★★★★★</span>
+          <span id="reviewCount">(245 reviews)</span>
+        </div>
+        <p id="serviceDescription" style="font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px;">
+          Expert professional cleaners ensuring spotless results for your home or office
+        </p>
+        <div class="price-tag-large" id="servicePrice">$40 - $80</div>
+        <div class="price-period">Pricing depends on service size and duration</div>
+        <div class="booking-options">
+          <button class="cta-button" onclick="bookNow()" style="width: 100%;">Book Now</button>
+          <button class="option-btn" onclick="addToFavorites()">❤️ Add to Favorites</button>
+          <button class="option-btn" onclick="scheduleBooking()">📅 Schedule for Later</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="details-section">
+    <h2 class="section-title">What's Included</h2>
+    <div class="features-showcase" id="serviceFeatures">
+      <!-- Features will be populated here -->
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="details-section">
+    <h2 class="section-title">Customer Reviews</h2>
+    <div class="reviews-container">
+      <div id="reviewStats">
+        <!-- Stats will be populated here -->
+      </div>
+      <div class="reviews-list" id="reviewsList">
+        <!-- Reviews will be populated here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div id="faqContainer">
+      <!-- FAQ items will be populated here -->
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="details-section" style="text-align: center; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(236, 72, 153, 0.1)); border-radius: 24px; padding: 60px 40px;">
+    <h2 class="section-title">Ready to Book?</h2>
+    <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+      Join thousands of satisfied customers and experience premium service quality.
+    </p>
+    <button class="cta-button" onclick="bookNow()">Book This Service</button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="bookNow()">📞</button>
+
+  <script src="storage-manager.js"></script>
+  <script src="premium.js"></script>
+  <script>
+    const serviceData = {
+      'Cleaning': {
+        icon: '🧹',
+        name: 'Professional Cleaning',
+        description: 'Expert professional cleaners ensuring spotless results for your home or office',
+        price: '$40 - $80',
+        rating: 4.9,
+        reviews: 245,
+        features: [
+          { icon: '✓', title: 'Deep Cleaning', description: 'Thorough cleaning of all surfaces and hard-to-reach areas' },
+          { icon: '✓', title: 'Eco-Friendly Products', description: 'Safe, non-toxic cleaning products for your family' },
+          { icon: '✓', title: 'Flexible Scheduling', description: 'Book at your convenience, any day or time' },
+          { icon: '✓', title: 'Guaranteed Satisfaction', description: '100% satisfaction guarantee on all cleanings' },
+          { icon: '✓', title: 'Insured & Bonded', description: 'Professional liability insurance included' },
+          { icon: '✓', title: 'Same-Day Booking', description: 'Get a professional cleaner the same day' }
+        ],
+        faq: [
+          { q: 'How long does a cleaning session take?', a: 'Standard cleaning sessions take 2-4 hours depending on home size. Deep cleaning can take 4-6 hours.' },
+          { q: 'Are your cleaners background checked?', a: 'Yes! All our professionals undergo thorough background checks and are fully insured and bonded.' },
+          { q: 'What if I\'m not satisfied?', a: 'We offer a 100% satisfaction guarantee. If you\'re not happy, we\'ll re-clean for free.' },
+          { q: 'Can I request a specific cleaner?', a: 'Yes! Once you have a regular cleaner, you can request them for all future bookings.' }
+        ]
+      },
+      'Plumbing': {
+        icon: '🔧',
+        name: 'Plumbing Experts',
+        description: '24/7 emergency plumbing services with certified professionals',
+        price: '$60 - $150',
+        rating: 4.8,
+        reviews: 189,
+        features: [
+          { icon: '✓', title: '24/7 Emergency Service', description: 'Available round the clock for urgent repairs' },
+          { icon: '✓', title: 'Licensed Plumbers', description: 'All technicians are licensed and certified' },
+          { icon: '✓', title: 'Upfront Pricing', description: 'No hidden fees, transparent pricing' },
+          { icon: '✓', title: 'Same-Day Service', description: 'Emergency repairs completed same day' },
+          { icon: '✓', title: 'Warranty Coverage', description: '12-month warranty on all repairs' },
+          { icon: '✓', title: 'Water Damage Prevention', description: 'Preventive inspections included' }
+        ],
+        faq: [
+          { q: 'Do you handle emergency calls?', a: 'Yes, we offer 24/7 emergency plumbing services with rapid response times.' },
+          { q: 'What if the issue reoccurs?', a: 'All our work comes with a 12-month warranty. If issues reoccur, we\'ll fix it free of charge.' },
+          { q: 'How quickly can you arrive?', a: 'For emergencies, we aim to arrive within 1-2 hours. For regular appointments, next-day service available.' },
+          { q: 'Do you offer maintenance plans?', a: 'Yes! We offer annual maintenance plans to prevent future issues and save money.' }
+        ]
+      },
+      'Electrician': {
+        icon: '⚡',
+        name: 'Electrical Services',
+        description: 'Safe and certified electrical solutions for residential and commercial needs',
+        price: '$75 - $200',
+        rating: 4.9,
+        reviews: 312,
+        features: [
+          { icon: '✓', title: 'Licensed Electricians', description: 'All work performed by licensed professionals' },
+          { icon: '✓', title: 'Code Compliance', description: 'All installations meet local electrical codes' },
+          { icon: '✓', title: 'Safety Inspections', description: 'Thorough safety checks included' },
+          { icon: '✓', title: 'Modern Equipment', description: 'Latest diagnostic tools and equipment' },
+          { icon: '✓', title: 'Emergency Services', description: '24/7 emergency electrical repairs' },
+          { icon: '✓', title: 'Warranty on Parts', description: '5-year warranty on all electrical parts' }
+        ],
+        faq: [
+          { q: 'Are your electricians certified?', a: 'Yes, all electricians are licensed, insured, and continuously trained on latest standards.' },
+          { q: 'Do you handle residential work?', a: 'Yes, we handle all types of residential electrical work from simple repairs to complete rewiring.' },
+          { q: 'What\'s your response time for emergencies?', a: 'We aim to respond to emergency calls within 1 hour during business hours, 2 hours otherwise.' },
+          { q: 'Can you install EV charging stations?', a: 'Yes! We specialize in EV charger installation with full permit and inspection handling.' }
+        ]
+      },
+      'Cooking': {
+        icon: '👨‍🍳',
+        name: 'Personal Chef',
+        description: 'Gourmet meals prepared in your home by professional chefs',
+        price: '$120 - $300',
+        rating: 4.95,
+        reviews: 428,
+        features: [
+          { icon: '✓', title: 'Custom Menus', description: 'Personalized menu based on your preferences and dietary needs' },
+          { icon: '✓', title: 'Premium Ingredients', description: 'Sourced from local, organic suppliers' },
+          { icon: '✓', title: 'Meal Prep', description: 'Weekly meal preparation and portioning' },
+          { icon: '✓', title: 'Dietary Accommodations', description: 'Vegan, keto, gluten-free, and allergies supported' },
+          { icon: '✓', title: 'Kitchen Cleanup', description: 'Complete kitchen cleaning after service' },
+          { icon: '✓', title: 'Special Occasions', description: 'Event catering and special meal preparation' }
+        ],
+        faq: [
+          { q: 'Can you accommodate dietary restrictions?', a: 'Absolutely! We accommodate all dietary preferences including vegan, keto, gluten-free, and allergies.' },
+          { q: 'How far in advance do I need to book?', a: 'For regular meal prep, 48 hours notice is preferred. For special events, book 1-2 weeks in advance.' },
+          { q: 'Do you provide your own ingredients?', a: 'Yes! We source premium, organic ingredients, though you can provide specific items if preferred.' },
+          { q: 'What\'s included in the service?', a: 'Meal preparation, cooking, plating, and full kitchen cleanup. We leave no mess!' }
+        ]
+      }
+    };
+
+    function initServicePage() {
+      const service = new URLSearchParams(window.location.search).get('service') || 'Cleaning';
+      const data = serviceData[service];
+
+      if (!data) {
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      // Set hero section
+      document.getElementById('serviceIcon').textContent = data.icon;
+      document.getElementById('serviceName').textContent = data.name;
+      document.getElementById('serviceDescription').textContent = data.description;
+      document.getElementById('servicePrice').textContent = data.price;
+      document.getElementById('serviceRating').textContent = '★'.repeat(Math.floor(data.rating));
+      document.getElementById('reviewCount').textContent = `(${data.reviews} reviews)`;
+
+      // Set features
+      const featuresHtml = data.features.map(f => `
+        <div class="feature-item">
+          <div class="feature-icon">${f.icon}</div>
+          <h3>${f.title}</h3>
+          <p>${f.description}</p>
+        </div>
+      `).join('');
+      document.getElementById('serviceFeatures').innerHTML = featuresHtml;
+
+      // Set reviews stats
+      const reviewsData = storage.getReviewsByService(service);
+      const avgRating = reviewsData.length > 0 
+        ? (reviewsData.reduce((sum, r) => sum + r.rating, 0) / reviewsData.length).toFixed(1)
+        : data.rating;
+
+      const statsHtml = `
+        <div class="overall-rating">
+          <div class="overall-rating-number">${avgRating}</div>
+          <div class="overall-rating-stars">${'★'.repeat(Math.floor(avgRating))}</div>
+          <div class="overall-rating-text">Based on ${reviewsData.length || data.reviews} reviews</div>
+        </div>
+        <div class="rating-bars">
+          <div class="rating-bar">
+            <div class="rating-bar-label">5 stars</div>
+            <div class="rating-bar-fill">
+              <div class="rating-bar-progress" style="width: 60%;"></div>
+            </div>
+          </div>
+          <div class="rating-bar">
+            <div class="rating-bar-label">4 stars</div>
+            <div class="rating-bar-fill">
+              <div class="rating-bar-progress" style="width: 25%;"></div>
+            </div>
+          </div>
+          <div class="rating-bar">
+            <div class="rating-bar-label">3 stars</div>
+            <div class="rating-bar-fill">
+              <div class="rating-bar-progress" style="width: 10%;"></div>
+            </div>
+          </div>
+          <div class="rating-bar">
+            <div class="rating-bar-label">2 stars</div>
+            <div class="rating-bar-fill">
+              <div class="rating-bar-progress" style="width: 3%;"></div>
+            </div>
+          </div>
+          <div class="rating-bar">
+            <div class="rating-bar-label">1 star</div>
+            <div class="rating-bar-fill">
+              <div class="rating-bar-progress" style="width: 2%;"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('reviewStats').innerHTML = statsHtml;
+
+      // Set reviews
+      const reviewsHtml = reviewsData.slice(0, 3).map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">${storage.getUser().name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}</div>
+              <div class="reviewer-details">
+                <h4>${storage.getUser().name}</h4>
+                <p>Verified Purchase</p>
+              </div>
+            </div>
+            <div class="review-stars">${'★'.repeat(r.rating)}</div>
+          </div>
+          <div class="review-text">${r.review}</div>
+        </div>
+      `).join('');
+      document.getElementById('reviewsList').innerHTML = reviewsHtml || '<p style="color: var(--text-secondary);">No reviews yet. Be the first to review!</p>';
+
+      // Set FAQ
+      const faqHtml = data.faq.map((item, index) => `
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>${item.q}</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>${item.a}</p>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('faqContainer').innerHTML = faqHtml;
+
+      window.currentService = service;
+    }
+
+    function toggleFaq(element) {
+      element.classList.toggle('active');
+    }
+
+    function bookNow() {
+      const booking = {
+        service: window.currentService,
+        eta: Math.floor(Math.random() * 30) + 15,
+        date: new Date().toLocaleDateString(),
+        timestamp: new Date().toLocaleTimeString()
+      };
+      
+      storage.addBooking(booking);
+      showPremiumToast('✓ Booking Confirmed', `${booking.service} booking confirmed! ETA: ${booking.eta} minutes`, 'success');
+      
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 2000);
+    }
+
+    function addToFavorites() {
+      const isFav = storage.isFavorited(window.currentService);
+      if (isFav) {
+        storage.removeFavorite(window.currentService);
+        showPremiumToast('Removed', `${window.currentService} removed from favorites`, 'success');
+      } else {
+        storage.addFavorite({ id: window.currentService, name: window.currentService });
+        showPremiumToast('Added', `${window.currentService} added to favorites`, 'success');
+      }
+    }
+
+    function scheduleBooking() {
+      showPremiumToast('Coming Soon', 'Schedule booking feature coming soon!', 'success');
+    }
+
+    window.addEventListener('DOMContentLoaded', initServicePage);
+  </script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickHelp Pro - Premium Home Services</title>
+  <link rel="stylesheet" href="premium.css">
+  <style>
+    .cta-section {
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stat-card {
+      text-align: center;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .stat-number {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 18px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .testimonials-section {
+      padding: 80px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 50px;
+    }
+
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all var(--transition-normal);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .testimonial-card:nth-child(1) { animation-delay: 0s; }
+    .testimonial-card:nth-child(2) { animation-delay: 0.1s; }
+    .testimonial-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .testimonial-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-8px);
+    }
+
+    .testimonial-stars {
+      font-size: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 4px;
+    }
+
+    .testimonial-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .testimonial-name {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .testimonial-role {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    .how-it-works {
+      padding: 80px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .steps-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+
+    .step-card {
+      position: relative;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .step-card:nth-child(1) { animation-delay: 0s; }
+    .step-card:nth-child(2) { animation-delay: 0.1s; }
+    .step-card:nth-child(3) { animation-delay: 0.2s; }
+    .step-card:nth-child(4) { animation-delay: 0.3s; }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .step-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .step-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .pricing-section {
+      padding: 80px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      transition: all var(--transition-normal);
+      position: relative;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .pricing-card:nth-child(1) { animation-delay: 0s; }
+    .pricing-card:nth-child(2) { animation-delay: 0.1s; }
+    .pricing-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .pricing-card.featured {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.1);
+      transform: scale(1.05);
+    }
+
+    .pricing-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.08);
+      transform: translateY(-8px) scale(1);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -16px;
+      right: 24px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .pricing-name {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .pricing-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-amount {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .pricing-period {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--success-color);
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+
+      .stats-section {
+        gap: 30px;
+        margin: 60px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li class="logout-btn" onclick="window.location.href='auth.html'">Sign In</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content" data-parallax="0.5">
+      <div class="hero-text">
+        <h2 class="hero-title">Premium Services at Your Fingertips</h2>
+        <p class="hero-subtitle">Book verified professionals instantly. Experience exceptional service quality with guaranteed satisfaction.</p>
+        <div class="cta-section">
+          <div class="cta-buttons">
+            <button class="cta-button" onclick="window.location.href='auth.html'">Get Started</button>
+            <button class="secondary-button" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-background" data-parallax="0.3"></div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stat-card">
+      <div class="stat-number">50K+</div>
+      <div class="stat-label">Happy Customers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">500K+</div>
+      <div class="stat-label">Services Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Satisfaction Rate</div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="section-header">
+      <h2>Why Choose QuickHelp Pro?</h2>
+      <p>Industry-leading features and benefits</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-number">01</div>
+        <h3>Verified Professionals</h3>
+        <p>All service providers are thoroughly vetted and certified with background checks</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">02</div>
+        <h3>Real-time Tracking</h3>
+        <p>Live GPS tracking of your service professional in real-time</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">03</div>
+        <h3>Quality Guarantee</h3>
+        <p>100% satisfaction guarantee or your money back, no questions asked</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">04</div>
+        <h3>Instant Support</h3>
+        <p>24/7 customer support via chat, call, or email at your service</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">05</div>
+        <h3>Competitive Pricing</h3>
+        <p>Best prices in the market with transparent billing and no hidden charges</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">06</div>
+        <h3>Flexible Scheduling</h3>
+        <p>Book services at your convenience, anytime that works for you</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Simple, seamless, and efficient</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Browse Services</h3>
+        <p>Explore our wide range of professional services tailored to your needs</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Book Instantly</h3>
+        <p>Select a service and book within seconds with flexible scheduling</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Track Live</h3>
+        <p>Monitor your professional's location and estimated arrival in real-time</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3>Rate & Review</h3>
+        <p>Share your experience and help others discover great professionals</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing-section">
+    <div class="section-header">
+      <h2>Simple, Transparent Pricing</h2>
+      <p>Choose the plan that works best for you</p>
+    </div>
+
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-description">Perfect for occasional needs</div>
+        <div class="pricing-amount">Free</div>
+        <div class="pricing-period">Pay as you go</div>
+        <ul class="pricing-features">
+          <li>Access to all services</li>
+          <li>Basic booking management</li>
+          <li>Email support</li>
+          <li>No subscription fees</li>
+        </ul>
+        <button class="cta-button" onclick="window.location.href='auth.html'" style="width: 100%;">Get Started</button>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">RECOMMENDED</div>
+        <div class="pricing-name">Professional</div>
+        <div class="pricing-description">For regular customers</div>
+        <div class="pricing-amount">$9.99</div>
+        <div class="pricing-period">per month</div>
+        <ul class="pricing-features">
+          <li>Everything in Starter</li>
+          <li>10% discount on all services</li>
+          <li>Priority booking</li>
+          <li>Chat support</li>
+          <li>Monthly credits</li>
+        </ul>
+        <button class="cta-button" onclick="window.location.href='auth.html'" style="width: 100%;">Subscribe Now</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-description">For businesses</div>
+        <div class="pricing-amount">Custom</div>
+        <div class="pricing-period">contact sales</div>
+        <ul class="pricing-features">
+          <li>Everything in Professional</li>
+          <li>Custom integrations</li>
+          <li>Dedicated account manager</li>
+          <li>Phone support</li>
+          <li>Bulk discounts</li>
+        </ul>
+        <button class="secondary-button" onclick="alert('Contact our sales team!')" style="width: 100%;">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="section-header">
+      <h2>What Our Customers Say</h2>
+      <p>Trusted by thousands across the country</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"QuickHelp Pro transformed how I manage household services. Professional, reliable, and affordable. Highly recommended!"</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JD</div>
+          <div>
+            <div class="testimonial-name">James Davis</div>
+            <div class="testimonial-role">Homeowner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"The best part? Booking takes 30 seconds and the professionals arrive on time, every time. Worth every penny!"</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SM</div>
+          <div>
+            <div class="testimonial-name">Sarah Miller</div>
+            <div class="testimonial-role">Business Owner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"Customer service is exceptional. They solved my problem within minutes. This is the future of home services!"</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">RC</div>
+          <div>
+            <div class="testimonial-name">Robert Chen</div>
+            <div class="testimonial-role">Property Manager</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(236, 72, 153, 0.1)); border-radius: 24px; margin: 80px 20px; border: 1px solid rgba(59, 130, 246, 0.2);">
+    <h2 style="font-size: 2.5rem; margin-bottom: 16px;">Ready to Experience Premium Service?</h2>
+    <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">Join thousands of satisfied customers and book your first service today.</p>
+    <button class="cta-button" onclick="window.location.href='auth.html'">Sign Up Free</button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <script src="premium.js"></script>
+</body>
+</html>

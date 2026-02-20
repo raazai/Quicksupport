@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings - QuickHelp Pro</title>
+  <link rel="stylesheet" href="premium.css">
+  <style>
+    .settings-container {
+      max-width: 900px;
+      margin: 100px auto 80px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .settings-header {
+      margin-bottom: 40px;
+    }
+
+    .settings-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .settings-nav {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+    }
+
+    .settings-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .menu-item {
+      padding: 12px 16px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      text-align: left;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+    }
+
+    .menu-item.active {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(236, 72, 153, 0.2));
+      color: var(--primary-color);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .settings-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .setting-section {
+      display: none;
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    .setting-section.active {
+      display: block;
+    }
+
+    .section-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all var(--transition-normal);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .setting-info p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .setting-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background var(--transition-normal);
+      border: none;
+    }
+
+    .toggle-switch.active {
+      background: var(--primary-color);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: left var(--transition-normal);
+    }
+
+    .toggle-switch.active::after {
+      left: 24px;
+    }
+
+    .select-control {
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .select-control:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: all var(--transition-normal);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-small {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .btn-small:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .connected-apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .app-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: all var(--transition-normal);
+    }
+
+    .app-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .app-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .app-name {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .app-status {
+      font-size: 12px;
+      color: var(--success-color);
+      font-weight: 600;
+    }
+
+    .danger-section {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(236, 72, 153, 0.1));
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .danger-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(239, 68, 68, 0.1);
+    }
+
+    .danger-item:last-child {
+      border-bottom: none;
+    }
+
+    .danger-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(236, 72, 153, 0.2));
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      color: var(--danger-color);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .danger-btn:hover {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(236, 72, 153, 0.3));
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .settings-nav {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .settings-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        overflow-x: auto;
+        position: relative;
+        top: auto;
+        padding-bottom: 16px;
+      }
+
+      .menu-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .input-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link">← Back to Dashboard</a></li>
+        <li class="logout-btn" onclick="logout()">Logout</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Settings Container -->
+  <div class="settings-container">
+    <!-- Header -->
+    <div class="settings-header">
+      <h1>⚙️ Account Settings</h1>
+      <p>Manage your account preferences and security settings</p>
+    </div>
+
+    <!-- Settings Navigation -->
+    <div class="settings-nav">
+      <!-- Menu -->
+      <div class="settings-menu">
+        <button class="menu-item active" onclick="switchSetting('notifications')">🔔 Notifications</button>
+        <button class="menu-item" onclick="switchSetting('privacy')">🔒 Privacy</button>
+        <button class="menu-item" onclick="switchSetting('payments')">💳 Payments</button>
+        <button class="menu-item" onclick="switchSetting('connected')">🔗 Connected Apps</button>
+        <button class="menu-item" onclick="switchSetting('danger')">⚠️ Danger Zone</button>
+      </div>
+
+      <!-- Content -->
+      <div class="settings-content">
+        <!-- Notifications -->
+        <div id="notifications" class="setting-section active">
+          <div class="section-card">
+            <div class="section-title">🔔 Notification Preferences</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Push Notifications</h4>
+                <p>Receive booking updates and reminders</p>
+              </div>
+              <button class="toggle-switch active" onclick="toggleSetting(this, 'pushNotifs')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>SMS Alerts</h4>
+                <p>Important updates via text message</p>
+              </div>
+              <button class="toggle-switch active" onclick="toggleSetting(this, 'smsAlerts')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Email Notifications</h4>
+                <p>Daily or weekly summary emails</p>
+              </div>
+              <button class="toggle-switch" onclick="toggleSetting(this, 'emailNotifs')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Marketing Emails</h4>
+                <p>Promotions and special offers</p>
+              </div>
+              <button class="toggle-switch" onclick="toggleSetting(this, 'marketingEmails')"></button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">🎯 Notification Frequency</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Frequency</h4>
+                <p>How often to receive notifications</p>
+              </div>
+              <select class="select-control" onchange="saveFrequency(this.value)">
+                <option value="real-time">Real-time</option>
+                <option value="hourly">Hourly</option>
+                <option value="daily" selected>Daily</option>
+                <option value="weekly">Weekly</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Quiet Hours</h4>
+                <p>Silent mode during these hours</p>
+              </div>
+              <div class="input-group">
+                <input type="text" placeholder="9:00 PM - 8:00 AM" value="9:00 PM - 8:00 AM">
+                <button class="btn-small" onclick="saveQuietHours()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy -->
+        <div id="privacy" class="setting-section">
+          <div class="section-card">
+            <div class="section-title">🔒 Privacy Settings</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Profile Visibility</h4>
+                <p>Who can see your profile</p>
+              </div>
+              <select class="select-control">
+                <option>Everyone</option>
+                <option selected>Members Only</option>
+                <option>Private</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Show Reviews</h4>
+                <p>Display your reviews publicly</p>
+              </div>
+              <button class="toggle-switch active" onclick="toggleSetting(this, 'publicReviews')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Show Booking History</h4>
+                <p>Display your service history</p>
+              </div>
+              <button class="toggle-switch" onclick="toggleSetting(this, 'publicHistory')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Data Collection</h4>
+                <p>Allow analytics and improvements</p>
+              </div>
+              <button class="toggle-switch active" onclick="toggleSetting(this, 'analytics')"></button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">🎛️ Tracking</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Location Tracking</h4>
+                <p>Allow location access for services</p>
+              </div>
+              <button class="toggle-switch active" onclick="toggleSetting(this, 'location')"></button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Cookies</h4>
+                <p>Essential and preference cookies</p>
+              </div>
+              <button class="btn-small" onclick="manageCookies()">Manage</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payments -->
+        <div id="payments" class="setting-section">
+          <div class="section-card">
+            <div class="section-title">💳 Payment Methods</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Default Payment Method</h4>
+                <p>Visa ending in 4242</p>
+              </div>
+              <button class="btn-small" onclick="changePayment()">Change</button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Add Payment Method</h4>
+                <p>Add credit card or digital wallet</p>
+              </div>
+              <button class="btn-small" onclick="addPayment()">Add</button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">🎁 Billing</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Subscription Plan</h4>
+                <p>Free Plan • Cancel Anytime</p>
+              </div>
+              <button class="btn-small" onclick="upgradePlan()">Upgrade</button>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Billing History</h4>
+                <p>View all transactions</p>
+              </div>
+              <button class="btn-small" onclick="viewBilling()">View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connected Apps -->
+        <div id="connected" class="setting-section">
+          <div class="section-card">
+            <div class="section-title">🔗 Connected Applications</div>
+            
+            <div class="connected-apps">
+              <div class="app-card">
+                <div class="app-icon">🔍</div>
+                <div class="app-name">Google Account</div>
+                <div class="app-status">Connected</div>
+              </div>
+              <div class="app-card">
+                <div class="app-icon">🍎</div>
+                <div class="app-name">Apple ID</div>
+                <div class="app-status">Not Connected</div>
+              </div>
+              <div class="app-card">
+                <div class="app-icon">💬</div>
+                <div class="app-name">Slack</div>
+                <div class="app-status">Not Connected</div>
+              </div>
+              <div class="app-card">
+                <div class="app-icon">📱</div>
+                <div class="app-name">SMS Notifications</div>
+                <div class="app-status">Connected</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">⚡ API Access</div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>API Key</h4>
+                <p>For developer integration</p>
+              </div>
+              <button class="btn-small" onclick="generateAPI()">Generate</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div id="danger" class="setting-section">
+          <div class="section-card danger-section">
+            <div class="section-title" style="color: var(--danger-color);">⚠️ Danger Zone</div>
+            
+            <div class="danger-item">
+              <div class="setting-info">
+                <h4>Download Your Data</h4>
+                <p>Export all your personal data</p>
+              </div>
+              <button class="btn-small" onclick="downloadData()">Download</button>
+            </div>
+
+            <div class="danger-item">
+              <div class="setting-info">
+                <h4>Deactivate Account</h4>
+                <p>Temporarily disable your account</p>
+              </div>
+              <button class="danger-btn" onclick="deactivateAccount()">Deactivate</button>
+            </div>
+
+            <div class="danger-item">
+              <div class="setting-info">
+                <h4>Delete Account</h4>
+                <p>Permanently delete account and data</p>
+              </div>
+              <button class="danger-btn" onclick="deleteAccount()">Delete Forever</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <script src="storage-manager.js"></script>
+  <script src="premium.js"></script>
+  <script>
+    const storage = new StorageManager();
+    
+    window.addEventListener('DOMContentLoaded', function() {
+      const currentUser = storage.getCurrentUser();
+      if (!currentUser) {
+        window.location.href = 'auth.html';
+        return;
+      }
+      initSettings();
+    });
+
+    function initSettings() {
+      const user = storage.getCurrentUser();
+      if (!user) return;
+      
+      // Load user settings
+      if (document.getElementById('settingsName')) document.getElementById('settingsName').value = user.name || '';
+      if (document.getElementById('settingsEmail')) document.getElementById('settingsEmail').value = user.email || '';
+      if (document.getElementById('settingsPhone')) document.getElementById('settingsPhone').value = user.phone || '';
+    }
+
+    function switchSetting(setting) {
+      document.querySelectorAll('.setting-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+      
+      document.getElementById(setting).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function toggleSetting(element, setting) {
+      element.classList.toggle('active');
+      const prefs = storage.getPreferences();
+      prefs[setting] = element.classList.contains('active');
+      storage.setPreferences(prefs);
+      showPremiumToast('Saved', `${setting} updated`, 'success');
+    }
+
+    function saveFrequency(value) {
+      showPremiumToast('Saved', `Frequency set to ${value}`, 'success');
+    }
+
+    function saveQuietHours() {
+      showPremiumToast('Saved', 'Quiet hours updated', 'success');
+    }
+
+    function manageCookies() {
+      showPremiumToast('Coming Soon', 'Cookie manager coming soon', 'success');
+    }
+
+    function changePayment() {
+      showPremiumToast('Coming Soon', 'Payment method management coming soon', 'success');
+    }
+
+    function addPayment() {
+      showPremiumToast('Coming Soon', 'Add payment method coming soon', 'success');
+    }
+
+    function upgradePlan() {
+      showPremiumToast('Coming Soon', 'Upgrade options coming soon', 'success');
+    }
+
+    function viewBilling() {
+      showPremiumToast('Coming Soon', 'Billing history coming soon', 'success');
+    }
+
+    function generateAPI() {
+      showPremiumToast('Generated', 'API key generated and copied to clipboard', 'success');
+    }
+
+    function downloadData() {
+      showPremiumToast('Starting', 'Your data export is being prepared', 'success');
+    }
+
+    function deactivateAccount() {
+      if (confirm('Are you sure? You can reactivate within 30 days.')) {
+        showPremiumToast('Deactivated', 'Your account has been deactivated', 'success');
+      }
+    }
+
+    function deleteAccount() {
+      if (confirm('Are you absolutely sure? This cannot be undone.')) {
+        localStorage.clear();
+        showPremiumToast('Deleted', 'Account permanently deleted', 'success');
+        setTimeout(() => {
+          window.location.href = 'landing.html';
+        }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - QuickHelp Pro</title>
+  <link rel="stylesheet" href="premium.css">
+  <style>
+    .dashboard-header {
+      padding: 40px 20px;
+      position: relative;
+      z-index: 10;
+      margin-top: 80px;
+    }
+
+    .dashboard-header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .user-info {
+      animation: slideInLeft 0.6s ease-out;
+    }
+
+    .user-info h2 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .user-info p {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: 12px;
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    .dashboard-actions button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all var(--transition-normal);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.2s; }
+    .stat-card:nth-child(4) { animation-delay: 0.3s; }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .dashboard-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .content-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+
+    .tab-button {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--transition-normal);
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-button.active {
+      color: var(--primary-color);
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .services-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .service-card-dashboard {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      text-align: center;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .service-card-dashboard:nth-child(1) { animation-delay: 0s; }
+    .service-card-dashboard:nth-child(2) { animation-delay: 0.1s; }
+    .service-card-dashboard:nth-child(3) { animation-delay: 0.2s; }
+    .service-card-dashboard:nth-child(4) { animation-delay: 0.3s; }
+
+    .service-card-dashboard:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(59, 130, 246, 0.2);
+    }
+
+    .service-icon-large {
+      font-size: 56px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .service-card-dashboard:nth-child(1) .service-icon-large { animation-delay: 0s; }
+    .service-card-dashboard:nth-child(2) .service-icon-large { animation-delay: 0.2s; }
+    .service-card-dashboard:nth-child(3) .service-icon-large { animation-delay: 0.4s; }
+    .service-card-dashboard:nth-child(4) .service-icon-large { animation-delay: 0.6s; }
+
+    .service-card-dashboard h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .service-card-dashboard p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .service-card-dashboard .cta-button {
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+
+    .bookings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .booking-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-normal);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .booking-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateX(8px);
+    }
+
+    .booking-info {
+      flex: 1;
+    }
+
+    .booking-service {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .booking-meta {
+      display: flex;
+      gap: 24px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+
+    .booking-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .action-btn:hover {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--primary-color);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .profile-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin: 0 auto 24px;
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .profile-email {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .profile-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .profile-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .logout-section {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout-btn-profile {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(236, 72, 153, 0.2));
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      color: var(--danger-color);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .logout-btn-profile:hover {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(236, 72, 153, 0.3));
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .booking-actions {
+        width: 100%;
+      }
+
+      .content-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='landing.html'" style="cursor: pointer;">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="bookings.html" class="nav-link">My Bookings</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li class="logout-btn" onclick="logout()">Logout</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <section class="dashboard-header">
+    <div class="dashboard-header-content">
+      <div class="user-info">
+        <h2 id="welcomeMessage">Welcome back! 👋</h2>
+        <p id="userEmail">Ready to book your next service</p>
+      </div>
+      <div class="dashboard-actions">
+        <button class="cta-button" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Book Service</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="quick-stats">
+    <div class="stat-card">
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-value" id="totalBookings">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Services Completed</div>
+      <div class="stat-value" id="completedServices">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Average Rating</div>
+      <div class="stat-value">4.9⭐</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Savings</div>
+      <div class="stat-value">$245</div>
+    </div>
+  </section>
+
+  <!-- Dashboard Content -->
+  <section class="dashboard-content">
+    <!-- Tabs -->
+    <div class="content-tabs">
+      <button class="tab-button active" onclick="switchDashboardTab('services')">Services</button>
+      <button class="tab-button" onclick="switchDashboardTab('bookings')">My Bookings</button>
+      <button class="tab-button" onclick="switchDashboardTab('profile')">Profile</button>
+    </div>
+
+    <!-- Services Tab -->
+    <div id="services" class="tab-content active">
+      <div class="services-showcase">
+        <div class="service-card-dashboard" onclick="window.location.href='service-details.html?service=Cleaning'">
+          <div class="service-icon-large">🧹</div>
+          <h3>Professional Cleaning</h3>
+          <p>Expert cleaners ensuring spotless results</p>
+          <button class="cta-button" onclick="event.stopPropagation(); window.location.href='service-details.html?service=Cleaning'" style="width: 100%;">View Details</button>
+        </div>
+
+        <div class="service-card-dashboard" onclick="window.location.href='service-details.html?service=Plumbing'">
+          <div class="service-icon-large">🔧</div>
+          <h3>Plumbing Experts</h3>
+          <p>24/7 emergency plumbing services</p>
+          <button class="cta-button" onclick="event.stopPropagation(); window.location.href='service-details.html?service=Plumbing'" style="width: 100%;">View Details</button>
+        </div>
+
+        <div class="service-card-dashboard" onclick="window.location.href='service-details.html?service=Electrician'">
+          <div class="service-icon-large">⚡</div>
+          <h3>Electrical Services</h3>
+          <p>Safe and certified electrical solutions</p>
+          <button class="cta-button" onclick="event.stopPropagation(); window.location.href='service-details.html?service=Electrician'" style="width: 100%;">View Details</button>
+        </div>
+
+        <div class="service-card-dashboard" onclick="window.location.href='service-details.html?service=Cooking'">
+          <div class="service-icon-large">👨‍🍳</div>
+          <h3>Personal Chef</h3>
+          <p>Gourmet meals prepared in your home</p>
+          <button class="cta-button" onclick="event.stopPropagation(); window.location.href='service-details.html?service=Cooking'" style="width: 100%;">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookings Tab -->
+    <div id="bookings" class="tab-content">
+      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <button class="cta-button" onclick="window.location.href='bookings.html'" style="flex: 1;">📅 View All Bookings</button>
+        <button class="secondary-button" onclick="window.location.href='history.html'" style="flex: 1;">📜 Service History</button>
+      </div>
+      <div class="bookings-list" id="bookingsList"></div>
+      <div id="emptyBookings" style="text-align: center; padding: 60px 20px;">
+        <div style="font-size: 64px; margin-bottom: 16px;">📦</div>
+        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 24px;">No active bookings yet</p>
+        <button class="cta-button" onclick="switchDashboardTab('services')">Browse Services</button>
+      </div>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="profile" class="tab-content">
+      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <button class="cta-button" onclick="window.location.href='profile.html'" style="flex: 1;">⚙️ Edit Full Profile</button>
+        <button class="secondary-button" onclick="window.location.href='history.html'" style="flex: 1;">📜 View History</button>
+      </div>
+      <div class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">JD</div>
+        <div class="profile-name" id="profileName">John Doe</div>
+        <div class="profile-email" id="profileEmailDisplay">john@example.com</div>
+
+        <div class="profile-item">
+          <span class="profile-label">Member Since</span>
+          <span class="profile-value" id="memberSince">Feb 2026</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">Total Bookings</span>
+          <span class="profile-value" id="profileTotalBookings">0</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">Account Status</span>
+          <span class="profile-value" style="color: var(--success-color);">Active ✓</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">Subscription</span>
+          <span class="profile-value">Free Plan</span>
+        </div>
+
+        <div class="logout-section">
+          <button class="logout-btn-profile" onclick="logout()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">📞</button>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <script src="storage-manager.js"></script>
+  <script src="premium.js"></script>
+  <script>
+    // Initialize Dashboard
+    window.addEventListener('DOMContentLoaded', function() {
+      initDashboard();
+      displayDashboardBookings();
+    });
+
+    function initDashboard() {
+      const storage = new StorageManager();
+      const currentUser = storage.getCurrentUser();
+      
+      if (!currentUser) {
+        window.location.href = 'auth.html';
+        return;
+      }
+      
+      const user = currentUser.name || 'Guest';
+      const email = currentUser.email || 'user@example.com';
+      
+      document.getElementById('welcomeMessage').textContent = `Welcome back, ${user}! 👋`;
+      document.getElementById('userEmail').textContent = 'Ready to book your next service';
+      
+      document.getElementById('profileName').textContent = user;
+      document.getElementById('profileEmailDisplay').textContent = email;
+      document.getElementById('profileAvatar').textContent = user.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      
+      updateStats();
+    }
+
+    function updateStats() {
+      const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      document.getElementById('totalBookings').textContent = bookings.length;
+      document.getElementById('completedServices').textContent = Math.floor(bookings.length * 0.8);
+      document.getElementById('profileTotalBookings').textContent = bookings.length;
+    }
+
+    function logout() {
+      const storage = new StorageManager();
+      storage.logoutUser();
+      showPremiumToast('Logged Out', 'See you next time!', 'success');
+      setTimeout(() => {
+        window.location.href = 'landing.html';
+      }, 1000);
+    }
+
+    function switchDashboardTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tab).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function displayDashboardBookings() {
+      const list = document.getElementById('bookingsList');
+      const empty = document.getElementById('emptyBookings');
+      const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+      if (bookings.length === 0) {
+        list.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+      list.innerHTML = '';
+
+      bookings.forEach((booking, index) => {
+        const bookingCard = document.createElement('div');
+        bookingCard.className = 'booking-card';
+        bookingCard.style.animationDelay = `${index * 0.1}s`;
+        
+        const statusClass = booking.status === 'Assigned' ? 'success' : 'pending';
+        
+        bookingCard.innerHTML = `
+          <div class="booking-info">
+            <div class="booking-service">${booking.service}</div>
+            <div class="booking-meta">
+              <div class="booking-meta-item">
+                <span>🆔</span> <strong>${booking.id}</strong>
+              </div>
+              <div class="booking-meta-item">
+                <span>⏱️</span> <strong>${booking.eta} mins</strong>
+              </div>
+              <div class="booking-meta-item">
+                <span>📅</span> <span>${booking.date} at ${booking.timestamp}</span>
+              </div>
+            </div>
+          </div>
+          <div class="booking-actions">
+            <button class="action-btn" onclick="trackBooking('${booking.id}')">Track</button>
+            <button class="action-btn" onclick="cancelBooking('${booking.id}')">Cancel</button>
+          </div>
+        `;
+        
+        list.appendChild(bookingCard);
+      });
+    }
+
+    function trackBooking(id) {
+      showPremiumToast('Tracking', `Tracking booking ${id}...`, 'success');
+    }
+
+    function cancelBooking(id) {
+      if (confirm('Are you sure you want to cancel this booking?')) {
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        bookings = bookings.filter(b => b.id !== id);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        
+        showPremiumToast('Cancelled', 'Booking has been cancelled', 'success');
+        displayDashboardBookings();
+        updateStats();
+      }
+    }
+  </script>
+</body>
+</html>

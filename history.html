@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service History - QuickHelp Pro</title>
+  <link rel="stylesheet" href="premium.css">
+  <style>
+    .history-container {
+      max-width: 1200px;
+      margin: 100px auto 80px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .history-header {
+      margin-bottom: 40px;
+    }
+
+    .history-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .history-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all var(--transition-normal);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.2s; }
+    .stat-card:nth-child(4) { animation-delay: 0.3s; }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+
+    .filter-tab {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--transition-normal);
+      white-space: nowrap;
+    }
+
+    .filter-tab:hover {
+      color: var(--text-primary);
+    }
+
+    .filter-tab.active {
+      color: var(--primary-color);
+    }
+
+    .filter-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .history-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .history-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all var(--transition-normal);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .history-card:nth-child(1) { animation-delay: 0s; }
+    .history-card:nth-child(2) { animation-delay: 0.1s; }
+    .history-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .history-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .history-card-content {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .service-icon {
+      font-size: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .info-item h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .info-item p {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .rating-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stars {
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: #fbbf24;
+    }
+
+    .review-preview {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--primary-color);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .history-card.expandable {
+      cursor: pointer;
+    }
+
+    .history-card-body {
+      padding: 0 24px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: none;
+    }
+
+    .history-card.expanded .history-card-body {
+      display: block;
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+    }
+
+    .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      white-space: nowrap;
+    }
+
+    .action-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+      .service-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .history-card-content {
+        grid-template-columns: 50px 1fr;
+      }
+
+      .action-buttons {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background-animation">
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
+        <span class="logo-icon">✨</span>
+        <h1>QuickHelp Pro</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link">← Back to Dashboard</a></li>
+        <li class="logout-btn" onclick="logout()">Logout</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- History Container -->
+  <div class="history-container">
+    <!-- Header -->
+    <div class="history-header">
+      <h1>Service History</h1>
+      <p>View all your completed services and reviews</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="history-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="totalCompleted">0</div>
+        <div class="stat-label">Services Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalSpent">$0</div>
+        <div class="stat-label">Total Spent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avgRating">4.9</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalReviews">0</div>
+        <div class="stat-label">Reviews Given</div>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterHistory('all')">All Services</button>
+      <button class="filter-tab" onclick="filterHistory('Cleaning')">🧹 Cleaning</button>
+      <button class="filter-tab" onclick="filterHistory('Plumbing')">🔧 Plumbing</button>
+      <button class="filter-tab" onclick="filterHistory('Electrician')">⚡ Electrician</button>
+      <button class="filter-tab" onclick="filterHistory('Cooking')">👨‍🍳 Cooking</button>
+      <button class="filter-tab" onclick="filterHistory('rated')">⭐ Rated</button>
+    </div>
+
+    <!-- History List -->
+    <div class="history-list" id="historyList">
+      <!-- History items will be populated here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-icon">📜</div>
+      <h3>No service history</h3>
+      <p>You haven't completed any services yet. Start booking now!</p>
+      <button class="cta-button" onclick="window.location.href='dashboard.html'">Browse Services</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 QuickHelp Pro. All rights reserved.</p>
+      <p>Crafted with precision for a premium experience</p>
+    </div>
+  </footer>
+
+  <script src="storage-manager.js"></script>
+  <script src="premium.js"></script>
+  <script>
+    let currentFilter = 'all';
+    let historyData = [];
+    const storage = new StorageManager();
+
+    window.addEventListener('DOMContentLoaded', function() {
+      const currentUser = storage.getCurrentUser();
+      if (!currentUser) {
+        window.location.href = 'auth.html';
+        return;
+      }
+      initHistory();
+    });
+
+    function initHistory() {
+      historyData = storage.getBookings().filter(b => b.status === 'completed');
+      displayHistory();
+    }
+
+    function updateStats() {
+      const stats = storage.getStats();
+      const reviews = storage.getReviews();
+      
+      document.getElementById('totalCompleted').textContent = stats.completedServices;
+      document.getElementById('totalSpent').textContent = '$' + (stats.completedServices * 65);
+      document.getElementById('avgRating').textContent = stats.averageRating;
+      document.getElementById('totalReviews').textContent = reviews.length;
+    }
+
+    function displayHistory() {
+      const historyList = document.getElementById('historyList');
+      const emptyState = document.getElementById('emptyState');
+      
+      let filtered = historyData;
+      
+      if (currentFilter !== 'all' && currentFilter !== 'rated') {
+        filtered = historyData.filter(h => h.service === currentFilter);
+      } else if (currentFilter === 'rated') {
+        filtered = historyData.filter(h => h.reviewed);
+      }
+
+      if (filtered.length === 0) {
+        historyList.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      historyList.innerHTML = filtered.map((item, index) => `
+        <div class="history-card expandable" onclick="toggleExpand(this)" data-history-id="${item.id}">
+          <div class="history-card-content">
+            <div class="service-icon">${getServiceIcon(item.service)}</div>
+            <div class="service-info">
+              <div class="info-item">
+                <h3>Service</h3>
+                <p>${item.service}</p>
+              </div>
+              <div class="info-item">
+                <h3>Date</h3>
+                <p>${item.date}</p>
+              </div>
+              <div class="info-item">
+                <h3>Booking ID</h3>
+                <p>${item.id}</p>
+              </div>
+            </div>
+            <div class="rating-display">
+              ${item.reviewed ? `
+                <div class="stars">${'★'.repeat(item.rating)}</div>
+              ` : `
+                <span style="color: var(--text-tertiary); font-size: 14px;">Not rated</span>
+              `}
+            </div>
+          </div>
+          ${item.reviewed ? `
+            <div class="history-card-body">
+              <div class="review-preview">"${item.review}"</div>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function getServiceIcon(service) {
+      const icons = {
+        'Cleaning': '🧹',
+        'Plumbing': '🔧',
+        'Electrician': '⚡',
+        'Cooking': '👨‍🍳'
+      };
+      return icons[service] || '📦';
+    }
+
+    function filterHistory(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      displayHistory();
+    }
+
+    function toggleExpand(element) {
+      element.classList.toggle('expanded');
+    }
+  </script>
+</body>
+</html>
