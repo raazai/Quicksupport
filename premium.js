@@ -308,14 +308,26 @@ function updateWelcomeMessage() {
 // ========================================
 
 function logout() {
-  localStorage.removeItem('user');
-  localStorage.removeItem('bookings');
-  
-  showPremiumToast('Logged Out', 'See you soon!', 'success');
-  
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 1000);
+  try {
+    // Use StorageManager to properly logout
+    const storage = new StorageManager();
+    storage.logoutUser();
+    
+    // Show toast if available
+    if (typeof showPremiumToast === 'function') {
+      showPremiumToast('Logged Out', 'See you next time!', 'success');
+    }
+    
+    // Redirect to auth page after delay
+    setTimeout(() => {
+      window.location.href = 'auth.html';
+    }, 800);
+  } catch (error) {
+    console.error('Logout error:', error);
+    // Fallback logout
+    localStorage.setItem('current_user', 'null');
+    window.location.href = 'auth.html';
+  }
 }
 
 // ========================================
