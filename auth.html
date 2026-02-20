@@ -479,65 +479,146 @@
   <script src="storage-manager.js"></script>
   <script src="premium.js"></script>
   <script>
+    // Initialize storage on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const storage = new StorageManager();
+      console.log('Auth page initialized, users available:', storage.getAllUsers().length);
+    });
+
     function switchTab(tab) {
       document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       
-      document.getElementById(tab).classList.add('active');
-      event.target.classList.add('active');
+      const tabElement = document.getElementById(tab);
+      if (tabElement) {
+        tabElement.classList.add('active');
+      }
+      
+      // Find and activate the clicked button
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.textContent.includes('Sign In') && tab === 'login') {
+          btn.classList.add('active');
+        } else if (btn.textContent.includes('Create Account') && tab === 'signup') {
+          btn.classList.add('active');
+        }
+      });
     }
 
     function socialLogin(provider) {
-      showPremiumToast('Coming Soon', `${provider.charAt(0).toUpperCase() + provider.slice(1)} login will be available soon`, 'success');
+      if (typeof showPremiumToast === 'function') {
+        showPremiumToast('Coming Soon', `${provider.charAt(0).toUpperCase() + provider.slice(1)} login will be available soon`, 'success');
+      } else {
+        alert('Coming soon: ' + provider + ' login');
+      }
     }
 
     function handleLogin(event) {
       event.preventDefault();
       
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      
-      const storage = new StorageManager();
-      const result = storage.loginUser(email, password);
-      
-      if (result.success) {
-        showPremiumToast('Success', `Welcome back, ${result.user.name}!`, 'success');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
-      } else {
-        showPremiumToast('Error', result.message, 'error');
+      try {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+        
+        if (!email || !password) {
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Error', 'Please enter both email and password', 'error');
+          } else {
+            alert('Please enter both email and password');
+          }
+          return;
+        }
+        
+        const storage = new StorageManager();
+        const result = storage.loginUser(email, password);
+        
+        if (result.success) {
+          console.log('Login successful for:', email);
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Success', `Welcome back, ${result.user.name}!`, 'success');
+          }
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 800);
+        } else {
+          console.log('Login failed:', result.message);
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Login Failed', result.message, 'error');
+          } else {
+            alert('Login Failed: ' + result.message);
+          }
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        if (typeof showPremiumToast === 'function') {
+          showPremiumToast('Error', 'Login error: ' + error.message, 'error');
+        } else {
+          alert('Login error: ' + error.message);
+        }
       }
     }
 
     function handleSignup(event) {
       event.preventDefault();
       
-      const name = document.getElementById('signup-name').value;
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-      const confirm = document.getElementById('signup-confirm').value;
-      
-      if (password !== confirm) {
-        showPremiumToast('Error', 'Passwords do not match', 'error');
-        return;
-      }
-      
-      if (password.length < 8) {
-        showPremiumToast('Error', 'Password must be at least 8 characters', 'error');
-        return;
-      }
-      
-      const storage = new StorageManager();
-      const result = storage.signupUser(name, email, password);
-      
-      if (result.success) {
-        showPremiumToast('Success', 'Account created! Redirecting...', 'success');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
-      } else {
-        showPremiumToast('Error', result.message, 'error');
+      try {
+        const name = document.getElementById('signup-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value.trim();
+        const confirm = document.getElementById('signup-confirm').value.trim();
+        
+        if (!name || !email || !password || !confirm) {
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Error', 'Please fill in all fields', 'error');
+          } else {
+            alert('Please fill in all fields');
+          }
+          return;
+        }
+        
+        if (password !== confirm) {
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Error', 'Passwords do not match', 'error');
+          } else {
+            alert('Passwords do not match');
+          }
+          return;
+        }
+        
+        if (password.length < 8) {
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Error', 'Password must be at least 8 characters', 'error');
+          } else {
+            alert('Password must be at least 8 characters');
+          }
+          return;
+        }
+        
+        const storage = new StorageManager();
+        const result = storage.signupUser(name, email, password);
+        
+        if (result.success) {
+          console.log('Signup successful for:', email);
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Success', 'Account created! Redirecting...', 'success');
+          }
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 800);
+        } else {
+          console.log('Signup failed:', result.message);
+          if (typeof showPremiumToast === 'function') {
+            showPremiumToast('Error', result.message, 'error');
+          } else {
+            alert('Signup failed: ' + result.message);
+          }
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        if (typeof showPremiumToast === 'function') {
+          showPremiumToast('Error', 'Signup error: ' + error.message, 'error');
+        } else {
+          alert('Signup error: ' + error.message);
+        }
       }
     }
   </script>

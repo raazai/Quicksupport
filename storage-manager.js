@@ -4,125 +4,144 @@
 
 class StorageManager {
   constructor() {
-    this.init();
-  }
-
-  init() {
-    if (!localStorage.getItem('qhp_initialized')) {
-      this.initializeDefaults();
-    }
+    this.initializeDefaults();
   }
 
   initializeDefaults() {
-    // Initialize test users with passwords
-    const testUsers = [
-      {
-        id: 'user1',
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'password123',
-        phone: '(555) 123-4567',
-        avatar: '👨',
-        joinDate: new Date().toISOString(),
-        address: '123 Main St',
-        city: 'New York',
-        postalCode: '10001'
-      },
-      {
-        id: 'user2',
-        name: 'Sarah Johnson',
-        email: 'sarah@example.com',
-        password: 'password123',
-        phone: '(555) 234-5678',
-        avatar: '👩',
-        joinDate: new Date().toISOString(),
-        address: '456 Oak Ave',
-        city: 'Los Angeles',
-        postalCode: '90001'
-      },
-      {
-        id: 'user3',
-        name: 'Mike Smith',
-        email: 'mike@example.com',
-        password: 'password123',
-        phone: '(555) 345-6789',
-        avatar: '👨‍💼',
-        joinDate: new Date().toISOString(),
-        address: '789 Pine Rd',
-        city: 'Chicago',
-        postalCode: '60601'
-      },
-      {
-        id: 'user4',
-        name: 'Raj Gupta',
-        email: 'Rajgupta@gamil.com',
-        password: 'Rajlpu@123',
-        phone: '(555) 456-7890',
-        avatar: '👨',
-        joinDate: new Date().toISOString(),
-        address: '321 Elm St',
-        city: 'Mumbai',
-        postalCode: '400001'
+    // Always ensure test users exist
+    try {
+      const testUsers = [
+        {
+          id: 'user1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          password: 'password123',
+          phone: '(555) 123-4567',
+          avatar: '👨',
+          joinDate: new Date().toISOString(),
+          address: '123 Main St',
+          city: 'New York',
+          postalCode: '10001'
+        },
+        {
+          id: 'user2',
+          name: 'Sarah Johnson',
+          email: 'sarah@example.com',
+          password: 'password123',
+          phone: '(555) 234-5678',
+          avatar: '👩',
+          joinDate: new Date().toISOString(),
+          address: '456 Oak Ave',
+          city: 'Los Angeles',
+          postalCode: '90001'
+        },
+        {
+          id: 'user3',
+          name: 'Mike Smith',
+          email: 'mike@example.com',
+          password: 'password123',
+          phone: '(555) 345-6789',
+          avatar: '👨‍💼',
+          joinDate: new Date().toISOString(),
+          address: '789 Pine Rd',
+          city: 'Chicago',
+          postalCode: '60601'
+        },
+        {
+          id: 'user4',
+          name: 'Raj Gupta',
+          email: 'Rajgupta@gamil.com',
+          password: 'Rajlpu@123',
+          phone: '(555) 456-7890',
+          avatar: '👨',
+          joinDate: new Date().toISOString(),
+          address: '321 Elm St',
+          city: 'Mumbai',
+          postalCode: '400001'
+        }
+      ];
+      
+      localStorage.setItem('qhp_test_users', JSON.stringify(testUsers));
+      
+      // Initialize other data if needed
+      if (!localStorage.getItem('bookings')) {
+        localStorage.setItem('bookings', JSON.stringify([]));
       }
-    ];
-    
-    localStorage.setItem('test_users', JSON.stringify(testUsers));
-    localStorage.setItem('current_user', 'null');
-    
-    // Initialize collections
-    localStorage.setItem('bookings', JSON.stringify([]));
-    localStorage.setItem('services_history', JSON.stringify([]));
-    localStorage.setItem('favorites', JSON.stringify([]));
-    localStorage.setItem('reviews', JSON.stringify([]));
-    localStorage.setItem('user_preferences', JSON.stringify({
-      notifications: true,
-      smsAlerts: true,
-      emailUpdates: true,
-      darkMode: true
-    }));
-    
-    localStorage.setItem('qhp_initialized', 'true');
+      if (!localStorage.getItem('services_history')) {
+        localStorage.setItem('services_history', JSON.stringify([]));
+      }
+      if (!localStorage.getItem('favorites')) {
+        localStorage.setItem('favorites', JSON.stringify([]));
+      }
+      if (!localStorage.getItem('reviews')) {
+        localStorage.setItem('reviews', JSON.stringify([]));
+      }
+      if (!localStorage.getItem('user_preferences')) {
+        localStorage.setItem('user_preferences', JSON.stringify({
+          notifications: true,
+          smsAlerts: true,
+          emailUpdates: true,
+          darkMode: true
+        }));
+      }
+    } catch (error) {
+      console.error('Storage initialization error:', error);
+    }
   }
 
   // ======== AUTHENTICATION ========
   loginUser(email, password) {
-    const users = this.getAllUsers();
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-      localStorage.setItem('current_user', JSON.stringify(user));
-      return { success: true, user };
+    try {
+      const users = this.getAllUsers();
+      if (!Array.isArray(users)) {
+        return { success: false, message: 'System error: Invalid user data' };
+      }
+      
+      const user = users.find(u => u.email && u.email === email && u.password && u.password === password);
+      
+      if (user) {
+        localStorage.setItem('current_user', JSON.stringify(user));
+        return { success: true, user };
+      }
+      return { success: false, message: 'Invalid email or password' };
+    } catch (error) {
+      console.error('Login error:', error);
+      return { success: false, message: 'Login failed: ' + error.message };
     }
-    return { success: false, message: 'Invalid email or password' };
   }
 
   signupUser(name, email, password) {
-    const users = this.getAllUsers();
-    
-    // Check if email already exists
-    if (users.some(u => u.email === email)) {
-      return { success: false, message: 'Email already registered' };
+    try {
+      const users = this.getAllUsers();
+      
+      // Check if email already exists
+      if (users.some(u => u.email === email)) {
+        return { success: false, message: 'Email already registered' };
+      }
+      
+      // Create new user
+      const newUser = {
+        id: 'user_' + Date.now(),
+        name,
+        email,
+        password,
+        phone: '',
+        avatar: '👤',
+        joinDate: new Date().toISOString(),
+        address: '',
+        city: '',
+        postalCode: ''
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('qhp_test_users', JSON.stringify(users));
+      localStorage.setItem('current_user', JSON.stringify(newUser));
+      
+      return { success: true, user: newUser };
+    } catch (error) {
+      console.error('Signup error:', error);
+      return { success: false, message: 'Signup failed: ' + error.message };
     }
-    
-    // Create new user
-    const newUser = {
-      id: 'user_' + Date.now(),
-      name,
-      email,
-      password,
-      phone: '',
-      avatar: '👤',
-      joinDate: new Date().toISOString(),
-      address: '',
-      city: '',
-      postalCode: ''
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('test_users', JSON.stringify(users));
-    localStorage.setItem('current_user', JSON.stringify(newUser));
-    
-    return { success: true, user: newUser };
   }
 
   logoutUser() {
@@ -135,7 +154,7 @@ class StorageManager {
   }
 
   getAllUsers() {
-    const users = localStorage.getItem('test_users');
+    const users = localStorage.getItem('qhp_test_users');
     return users ? JSON.parse(users) : [];
   }
 
